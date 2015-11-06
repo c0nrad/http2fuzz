@@ -6,11 +6,14 @@ HTTP2 fuzzer built in Golang.
 
 ## Usage
 
-	$ make build
+    $ make build
     $ ./http2fuzz --help
     Usage of ./http2fuzz:
-      -crash-delay=1000: number a milliseconds to wait between broken connections
-      -fuzz-delay=200: number of milliseconds to wait between each request per strategy
+        -fuzz-delay=100: number of milliseconds to wait between each request per strategy
+        -listen="0.0.0.0": interface to listen from
+        -port="8000": port to listen from
+        -restart-delay=10: number a milliseconds to wait between broken connections
+        -target="": HTTP2 server to fuzz in host:port format
     $ ./http2fuzz --target "localhost:443"
     $ make fuzz # persistant
 
@@ -109,11 +112,11 @@ Fuzzer 10:
 ## Code Layout
 
 http2fuzz/
-	certs/     Holds localhost certifcates for fuzzing as an http2 server
-	docs/      Holds documents and pictures
-	fuzzer/    Holds the actual fuzzing code for client/server, along with an http2 connection wrapper class
-	replay/    Holds code for replaying packates from a json file
-	util/      Holds common utility functions
+    certs/     Holds localhost certifcates for fuzzing as an http2 server
+    docs/      Holds documents and pictures
+    fuzzer/    Holds the actual fuzzing code for client/server, along with an http2 connection wrapper class
+    replay/    Holds code for replaying packates from a json file
+    util/      Holds common utility functions
 
 fuzzer/connection.go conatins the Connection struct. This structure sits on top of the actual TLS/TCP connection. It defines a number of methods for sending HTTP2 frames on this connection. Also handles the HPACK encoding/decoding.
 
