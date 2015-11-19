@@ -123,6 +123,42 @@ fuzzer/connection.go conatins the Connection struct. This structure sits on top 
 
 fuzzer/fuzzer.go contains all the fuzzing strategies.
 
+## Replay Mode
+
+The code recently got refactored and it hasen't been refactoed back in, and it only works with raw frames fuzzer, for testing with single frames, a script like this works:
+
+```
+package main
+
+import (
+    "io"
+    "net"
+
+    "github.com/bradfitz/http2"
+    "github.com/c0nrad/http2fuzz/util"
+)
+
+func main() {
+    var Target = "localhost:80"
+
+    conn := Dial(Target)
+    io.WriteString(conn, http2.ClientPreface)
+
+    framer := http2.NewFramer(conn, conn)
+
+    // FrameType, Flag, StreamId, Payload
+    framer.WriteRawFrame(http2.FrameType(10), http2.Flags(16), 481004859, util.FromBase64("dZfden+U2nU/Y5uUsM3iz2XwAboFueI/xyR2"))
+}
+
+func Dial(host string) net.Conn {
+    conn, err := net.Dial("tcp", host)
+    if err != nil {
+        panic(err)
+    }
+    return conn
+}
+```
+
 ## Contact
 
 stuartlarsen@yahoo-inc.com
