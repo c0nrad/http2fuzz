@@ -332,7 +332,7 @@ func Dial(host string, isTLS bool) (net.Conn, error) {
 
 	if isTLS {
 		cfg := &tls.Config{
-			ServerName:         host,
+			ServerName:         strings.Split(host, ":")[0],
 			NextProtos:         []string{"h2", "h2-14"},
 			InsecureSkipVerify: true,
 		}
