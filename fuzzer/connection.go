@@ -264,7 +264,7 @@ func (conn *Connection) readFrames() error {
 			log.Printf("  Window-Increment = %v\n", f.Increment)
 		case *http2.GoAwayFrame:
 			log.Printf("  Last-Stream-ID = %d; Error-Code = %v (%d)\n", f.LastStreamID, f.ErrCode, f.ErrCode)
-			conn.handleError(fmt.Errorf("Recieved GoAwayFrame %v", f.ErrCode))
+			conn.handleError(fmt.Errorf("Received GoAwayFrame %v", f.ErrCode))
 		case *http2.DataFrame:
 			log.Printf("  %q", f.Data())
 		case *http2.HeadersFrame:
